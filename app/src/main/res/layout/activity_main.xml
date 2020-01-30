@@ -19,4 +19,30 @@
         android:layout_height="wrap_content"
         tools:text="14 °C / 39 °F"/>
 
+    <TextView
+        android:id="@+id/wind"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:text="Windspeed"/>
+
+    <ImageView
+        android:id="@+id/cloud"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        android:visibility="gone"
+        android:src="@drawable/cloud"/>
+
+    <Button
+        android:id="@+id/button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Get next 5 days" />
+
+    <TextView
+        android:id="@+id/standard_deviation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        tools:text="0.5f" />
+
 </LinearLayout>

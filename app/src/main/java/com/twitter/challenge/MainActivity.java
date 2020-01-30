@@ -2,6 +2,8 @@ package com.twitter.challenge;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -18,6 +20,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         final TextView temperatureView = findViewById(R.id.temperature);
+        final TextView windView = findViewById(R.id.wind);
+        final ImageView cloudView = findViewById(R.id.cloud);
 
         WeatherViewModel weatherViewModel = new ViewModelProvider(this).get(WeatherViewModel.class);
         weatherViewModel.getWeather().observe(MainActivity.this, climate -> {
@@ -26,6 +30,23 @@ public class MainActivity extends AppCompatActivity {
             temperatureView.setText(getString(R.string.temperature,
                     temperature,
                     TemperatureConverter.celsiusToFahrenheit(temperature)));
+
+            windView.setText(getString(R.string.wind,
+                    climate.getWind().getSpeed(),
+                    climate.getWind().getDeg()));
+
+            cloudView.setVisibility(climate.getClouds().getCloudiness() > 50 ? View.VISIBLE : View.GONE);
+        });
+
+        final TextView standardDeviationView = findViewById(R.id.standard_deviation);
+
+        weatherViewModel.getFiveDaysSD().observe(MainActivity.this, standardDeviation -> {
+            standardDeviationView.setVisibility(View.VISIBLE);
+            standardDeviationView.setText(getString(R.string.standard_deviation,standardDeviation));
+        });
+
+        findViewById(R.id.button).setOnClickListener(v -> {
+            weatherViewModel.updateNextFiveDaysSD();
         });
     }
 

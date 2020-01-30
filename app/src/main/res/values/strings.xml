@@ -2,4 +2,6 @@
     <string name="app_name">Tweather</string>
     <string name="current_temperature">Current temperature</string>
     <string name="temperature">%1$f °C / %2$f °F</string>
+    <string name="wind">speed: %1$f | deg: %2$d </string>
+    <string name="standard_deviation">SD: %1$f</string>
 </resources>

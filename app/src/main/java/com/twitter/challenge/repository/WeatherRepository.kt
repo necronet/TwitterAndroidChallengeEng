@@ -8,9 +8,7 @@ import com.twitter.challenge.model.Climate
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import javax.inject.Singleton
 
-@Singleton
 object WeatherRepository  {
     fun getCurrent() : LiveData<Climate> {
         val data = MutableLiveData<Climate>()
