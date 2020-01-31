@@ -1,4 +1,4 @@
-package com.twitter.challenge;
+package com.twitter.challenge.core;
 
 public class TemperatureConverter {
     /**

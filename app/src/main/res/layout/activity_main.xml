@@ -38,6 +38,12 @@
         android:layout_height="wrap_content"
         android:text="Get next 5 days" />
 
+    <ProgressBar
+        android:id="@+id/progress"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
     <TextView
         android:id="@+id/standard_deviation"
         android:layout_width="match_parent"

@@ -9,6 +9,7 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.twitter.challenge.core.TemperatureConverter;
 import com.twitter.challenge.viewmodel.WeatherViewModel;
 
 public class MainActivity extends AppCompatActivity {
@@ -40,9 +41,15 @@ public class MainActivity extends AppCompatActivity {
 
         final TextView standardDeviationView = findViewById(R.id.standard_deviation);
 
-        weatherViewModel.getFiveDaysSD().observe(MainActivity.this, standardDeviation -> {
+        weatherViewModel.isBusy().observe(this, isBusy-> {
+            findViewById(R.id.progress).setVisibility(isBusy ? View.VISIBLE : View.GONE);
+            standardDeviationView.setVisibility(!isBusy ? View.VISIBLE : View.GONE);
+        });
+
+        weatherViewModel.getStandardDeviation().observe(MainActivity.this, standardDeviation -> {
+            Log.d("DEBUG", "Method getting trigger over and over again");
             standardDeviationView.setVisibility(View.VISIBLE);
-            standardDeviationView.setText(getString(R.string.standard_deviation,standardDeviation));
+            standardDeviationView.setText(getString(R.string.standard_deviation, standardDeviation));
         });
 
         findViewById(R.id.button).setOnClickListener(v -> {

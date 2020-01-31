@@ -1,6 +1,5 @@
-package com.twitter.challenge
+package com.twitter.challenge.remote
 
-import com.twitter.challenge.remote.WeatherService
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
