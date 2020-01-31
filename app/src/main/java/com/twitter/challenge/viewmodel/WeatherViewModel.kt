@@ -1,6 +1,9 @@
 package com.twitter.challenge.viewmodel
 
+import android.content.Context
+import android.net.ConnectivityManager
 import android.util.Log
+import androidx.core.content.ContextCompat.getSystemService
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -17,10 +20,16 @@ import kotlinx.coroutines.launch
 class WeatherViewModel : ViewModel() {
     private val isBusy = MutableLiveData<Boolean>(false)
     private val standardDeviation = MutableLiveData<Float>()
-    val weather : LiveData<Climate> = WeatherRepository.getCurrent()
+    private val weather = MutableLiveData<Climate>()
 
     fun isBusy() : LiveData<Boolean> = isBusy
     fun getStandardDeviation() : LiveData<Float> = standardDeviation
+    fun getWeather() : LiveData<Climate> {
+        CoroutineScope(Dispatchers.IO).launch {
+            weather.postValue(WeatherRepository.getCurrent())
+        }
+        return weather
+    }
 
     fun updateNextFiveDaysSD() = CoroutineScope(Dispatchers.IO).launch {
         if (isBusy.value!!) return@launch
@@ -28,6 +37,5 @@ class WeatherViewModel : ViewModel() {
         val temperatureNextFiveDays = (1..5).map { day -> WeatherRepository.getFuture(day.toString()).weather.temp }
         isBusy.postValue(false)
         standardDeviation.postValue(Statistic.standardDeviation(temperatureNextFiveDays))
-
     }
 }

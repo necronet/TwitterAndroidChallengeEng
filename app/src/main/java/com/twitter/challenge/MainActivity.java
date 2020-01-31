@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.twitter.challenge.core.TemperatureConverter;
+import com.twitter.challenge.viewmodel.ConnectionLiveData;
 import com.twitter.challenge.viewmodel.WeatherViewModel;
 
 public class MainActivity extends AppCompatActivity {
@@ -19,14 +20,27 @@ public class MainActivity extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        WeatherViewModel weatherViewModel = new ViewModelProvider(this).get(WeatherViewModel.class);
 
+        new ConnectionLiveData(getApplicationContext()).observe(this, isActive -> {
+            //network is available
+            if(isActive) {
+                setupUI(weatherViewModel);
+            } else {
+                showNoInternetAccess();
+            }
+        });
+    }
+
+    private void setupUI(WeatherViewModel weatherViewModel) {
+
+        findViewById(R.id.content).setVisibility(View.VISIBLE);
+        findViewById(R.id.no_internet_message).setVisibility(View.GONE);
         final TextView temperatureView = findViewById(R.id.temperature);
         final TextView windView = findViewById(R.id.wind);
         final ImageView cloudView = findViewById(R.id.cloud);
 
-        WeatherViewModel weatherViewModel = new ViewModelProvider(this).get(WeatherViewModel.class);
         weatherViewModel.getWeather().observe(MainActivity.this, climate -> {
-            Log.d("DEBUG", "W:" + climate);
             float temperature = climate.getWeather().getTemp();
             temperatureView.setText(getString(R.string.temperature,
                     temperature,
@@ -55,6 +69,10 @@ public class MainActivity extends AppCompatActivity {
         findViewById(R.id.button).setOnClickListener(v -> {
             weatherViewModel.updateNextFiveDaysSD();
         });
+    }
+    private void showNoInternetAccess() {
+        findViewById(R.id.content).setVisibility(View.GONE);
+        findViewById(R.id.no_internet_message).setVisibility(View.VISIBLE);
     }
 
 }

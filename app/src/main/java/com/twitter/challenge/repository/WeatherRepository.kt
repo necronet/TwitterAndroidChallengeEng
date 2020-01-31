@@ -11,22 +11,7 @@ import retrofit2.Callback
 import retrofit2.Response
 
 object WeatherRepository  {
-    fun getCurrent() : LiveData<Climate> {
-        val data = MutableLiveData<Climate>()
-        NetworkModule.provideWeatherService().getCurrent().enqueue(object: Callback<Climate> {
-
-            override fun onResponse(call: Call<Climate>, response: Response<Climate>) {
-                Log.i("DEBUG", "body ${response.body()}");
-                data.value = response.body()
-            }
-
-            override fun onFailure(call: Call<Climate>, t: Throwable) {
-                TODO("UPPSS ERROR ${t.message}")
-            }
-        })
-
-        return data
-    }
+    suspend fun getCurrent() = NetworkModule.provideWeatherService().getCurrent()
 
     suspend fun getFuture(day: String) : Climate = NetworkModule.provideWeatherService().getFuture(day)
 }

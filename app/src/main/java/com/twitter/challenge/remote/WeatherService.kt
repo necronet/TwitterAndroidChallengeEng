@@ -9,7 +9,7 @@ import retrofit2.http.Path
 interface WeatherService {
 
     @GET("/current.json")
-    fun getCurrent(): Call<Climate>
+    suspend fun getCurrent(): Climate
 
     @GET("/future_{day}.json")
     suspend fun getFuture(@Path("day") day: String): Climate
